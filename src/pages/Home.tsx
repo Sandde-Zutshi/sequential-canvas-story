@@ -75,7 +75,7 @@ const Home = () => {
       <IssuesChart
         title="Issue Status"
         data={resolvedChartData}
-        type="stacked-line"
+        type="stacked-vertical"
       />
 
       <IssuesChart
