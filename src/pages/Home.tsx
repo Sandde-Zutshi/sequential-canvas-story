@@ -62,14 +62,12 @@ const Home = () => {
           title="City with Highest Resolution Rate"
           value="Noida"
           subtitle="93%"
-          icon={Trophy}
           variant="success"
         />
         <MetricCard
           title="City with Lowest Resolution Rate"
           value="Baharudgarh"
           subtitle="29%"
-          icon={ArrowDownCircle}
           variant="danger"
           outlined
         />
