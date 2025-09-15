@@ -74,8 +74,11 @@ export const MetricCard = ({
           <div className="mt-2 text-center">
             <span
               className={cn(
-                "inline-flex items-center px-3 py-1 rounded-full bg-white text-base md:text-lg font-semibold",
-                outlined ? outlinedTextClasses[variant] : `text-[hsl(var(--${variant}))]`
+                "inline-flex items-center px-3 py-1 rounded-full text-base md:text-lg font-semibold",
+                // Non-outlined cards: red pill with white text (match IssueStatCard red box)
+                !outlined ? "bg-[hsl(var(--danger))] text-white" : "bg-white",
+                // For outlined, set the text color to variant color (danger -> red)
+                outlined ? outlinedTextClasses[variant] : undefined
               )}
             >
               {subtitle}
