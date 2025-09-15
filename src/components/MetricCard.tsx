@@ -69,7 +69,7 @@ export const MetricCard = ({
           <h3 className={cn("text-xl font-semibold text-center", outlined ? outlinedTextClasses[variant] : "text-white")}>{title}</h3>
 
           <div className="flex items-center justify-center mt-3">
-            <span className={cn("text-3xl md:text-4xl font-bold tracking-tight text-center", outlined ? outlinedTextClasses[variant] : undefined)}>{value}</span>
+            <span className={cn("text-3xl md:text-4xl font-bold tracking-tight text-center", outlined ? outlinedTextClasses[variant] : "text-white")}>{value}</span>
           </div>
         </div>
 
