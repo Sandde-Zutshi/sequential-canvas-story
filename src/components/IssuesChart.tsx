@@ -171,6 +171,75 @@ export const IssuesChart = ({ title, data, type = "bar", showTarget = true, show
     );
   }
 
+  if (type === 'stacked-vertical') {
+    // Build transformed data: actual and remaining (target - actual)
+    const transformed = data.map((d: any) => ({
+      ...d,
+      actualResolved: Number(d.actualResolved) || 0,
+      remaining: Math.max((Number(d.targetResolved) || 0) - (Number(d.actualResolved) || 0), 0),
+      targetResolved: Number(d.targetResolved) || 0,
+    }));
+
+    const SegmentLabel = (props: any) => {
+      const { x, y, width, height, value, payload } = props;
+      if (value == null) return null;
+      const target = payload.targetResolved || 0;
+      const pct = target > 0 ? Math.round((value / target) * 100) : 0;
+      const posX = (x || 0) + (width || 0) / 2;
+      const posY = (y || 0) + (height || 0) / 2 + 4; // center vertically
+      return (
+        <text x={posX} y={posY} textAnchor="middle" fontSize={12} fontWeight={700} fill={value === payload.remaining ? 'hsl(var(--danger))' : '#fff'}>
+          {pct}%
+        </text>
+      );
+    };
+
+    const VerticalTooltip = ({ active, payload, label }: any) => {
+      if (!active || !payload || !payload.length) return null;
+      const p = payload[0].payload;
+      return (
+        <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
+          <p className="font-medium mb-2">{label}</p>
+          <p className="text-sm" style={{ color: 'hsl(var(--chart-2))' }}>
+            Actual Resolved: {(p.actualResolved || 0).toLocaleString()}
+          </p>
+          <p className="text-sm" style={{ color: 'hsl(var(--danger))' }}>
+            Remaining to Target: {(p.remaining || 0).toLocaleString()}
+          </p>
+          <p className="text-sm mt-1">Target Resolved: {(p.targetResolved || 0).toLocaleString()}</p>
+        </div>
+      );
+    };
+
+    return (
+      <Card className="chart-container animate-card-enter">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-foreground">{title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={isMobile ? 360 : 460}>
+            <ComposedChart data={transformed} margin={{ top: (isMobile ? 56 : 40), right: (isMobile ? 16 : 30), left: (isMobile ? 12 : 20), bottom: (isMobile ? 64 : 56) }} barCategoryGap={isMobile ? '35%' : '20%'} barGap={isMobile ? 2 : 4}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.5} />
+              <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} fontWeight={500} interval={0} tick={xTickProps} />
+              <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} fontWeight={500} domain={[0, 'dataMax + 10']} tickCount={6} />
+              <Tooltip content={<VerticalTooltip />} />
+
+              {/* actualResolved segment */}
+              <Bar dataKey="actualResolved" name="Actual Resolved" fill="hsl(var(--chart-2))" stackId="a" radius={[6, 6, 0, 0]} barSize={isMobile ? 20 : 28} isAnimationActive={!isMobile}>
+                <LabelList dataKey="actualResolved" position="inside" content={<SegmentLabel />} />
+              </Bar>
+
+              {/* remaining segment */}
+              <Bar dataKey="remaining" name="Remaining" fill="hsl(var(--danger))" stackId="a" radius={[6, 6, 0, 0]} barSize={isMobile ? 20 : 28} isAnimationActive={!isMobile}>
+                <LabelList dataKey="remaining" position="inside" content={<SegmentLabel />} />
+              </Bar>
+            </ComposedChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="chart-container animate-card-enter">
       <CardHeader>
