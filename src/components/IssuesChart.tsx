@@ -172,48 +172,54 @@ export const IssuesChart = ({ title, data, type = "bar", showTarget = true, show
   }
 
   if (type === 'stacked-vertical') {
-    // Build transformed data: compute percent segments per user's formula
-    // unresolvedPercent = (targetResolved - actualResolved) / 100
-    // resolvedPercent = actualResolved / 100
+    // Build transformed data: compute absolute segments per city
+    // resolved = actualResolved
+    // unresolved = targetResolved - actualResolved
     const transformed = data.map((d: any) => {
       const actual = Number(d.actualResolved) || 0;
       const target = Number(d.targetResolved) || 0;
-      const unresolvedPercent = Math.round((target - actual) / 100);
-      const resolvedPercent = Math.round(actual / 100);
+      const unresolved = Math.max(target - actual, 0);
       return {
         ...d,
         actualResolved: actual,
         targetResolved: target,
-        unresolvedPercent: unresolvedPercent, // top segment (red)
-        resolvedPercent: resolvedPercent, // bottom segment (green)
+        unresolvedResolved: unresolved,
       };
     });
 
-    const SegmentLabel = (props: any) => {
+    // Label for the green (actualResolved) segment: show (actual/target)*100
+    const ResolvedLabel = (props: any) => {
       const { x, y, width, height, value, payload } = props;
-      if (value == null) return null;
-      const display = Math.round(Number(value));
+      if (value == null || !payload) return null;
+      const target = Number(payload.targetResolved || 0);
+      if (target <= 0) return null;
+      const pct = Math.round((Number(value) / target) * 100);
       const posX = (x ?? 0) + ((width ?? 0) / 2);
       const posY = (y ?? 0) + ((height ?? 0) / 2) + 4;
       return (
         <text x={posX} y={posY} textAnchor="middle" fontSize={12} fontWeight={700} fill="#fff">
-          {display}%
+          {pct}%
         </text>
       );
     };
 
     const VerticalTooltip = ({ active, payload, label }: any) => {
       if (!active || !payload || !payload.length) return null;
-      const p = payload[0].payload;
+      // payload contains stacked segments; find payload[0].payload which is original data
+      const p = payload[0]?.payload || {};
+      const actual = Number(p.actualResolved || 0);
+      const target = Number(p.targetResolved || 0);
+      const pct = target > 0 ? Math.round((actual / target) * 100) : 0;
       return (
         <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
           <p className="font-medium mb-2">{label}</p>
           <p className="text-sm" style={{ color: 'hsl(var(--chart-2))' }}>
-            Actual Resolved: {(p.actualResolved || 0).toLocaleString()}
+            Actual Resolved: {actual.toLocaleString()}
           </p>
           <p className="text-sm" style={{ color: 'hsl(var(--danger))' }}>
-            Target Resolved: {(p.targetResolved || 0).toLocaleString()}
+            Target Resolved: {target.toLocaleString()}
           </p>
+          <p className="text-sm mt-1">Resolution: {pct}%</p>
         </div>
       );
     };
@@ -231,15 +237,13 @@ export const IssuesChart = ({ title, data, type = "bar", showTarget = true, show
               <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} fontWeight={500} domain={[0, 'dataMax + 10']} tickCount={6} />
               <Tooltip content={<VerticalTooltip />} />
 
-              {/* resolved (bottom) segment - green */}
-              <Bar dataKey="resolvedPercent" name="Resolved (%)" fill="hsl(var(--success))" stackId="a" radius={[6, 6, 0, 0]} barSize={isMobile ? 20 : 28} isAnimationActive={!isMobile}>
-                <LabelList dataKey="resolvedPercent" position="inside" content={<SegmentLabel />} />
+              {/* resolved (bottom) segment - green (actualResolved) */}
+              <Bar dataKey="actualResolved" name="Resolved" fill="hsl(var(--success))" stackId="a" radius={[6, 6, 0, 0]} barSize={isMobile ? 20 : 28} isAnimationActive={!isMobile}>
+                <LabelList dataKey="actualResolved" position="inside" content={<ResolvedLabel />} />
               </Bar>
 
-              {/* unresolved (top) segment - red */}
-              <Bar dataKey="unresolvedPercent" name="Unresolved (%)" fill="hsl(var(--danger))" stackId="a" radius={[6, 6, 0, 0]} barSize={isMobile ? 20 : 28} isAnimationActive={!isMobile}>
-                <LabelList dataKey="unresolvedPercent" position="inside" content={<SegmentLabel />} />
-              </Bar>
+              {/* unresolved (top) segment - red (target - actual) */}
+              <Bar dataKey="unresolvedResolved" name="Unresolved" fill="hsl(var(--danger))" stackId="a" radius={[6, 6, 0, 0]} barSize={isMobile ? 20 : 28} isAnimationActive={!isMobile} />
             </ComposedChart>
           </ResponsiveContainer>
         </CardContent>
