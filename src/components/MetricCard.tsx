@@ -27,7 +27,8 @@ export const MetricCard = ({
   className,
   headingOverride,
   headingClassName,
-}: MetricCardProps) => {
+  outlined,
+}: MetricCardProps & { outlined?: boolean }) => {
   const variantClasses = {
     success: "metric-card-success",
     warning: "metric-card-warning",
@@ -36,11 +37,19 @@ export const MetricCard = ({
     primary: "metric-card-primary",
   };
 
+  const textVariantClasses: Record<string, string> = {
+    success: "text-success-foreground",
+    warning: "text-warning-foreground",
+    danger: "text-danger-foreground",
+    info: "text-info-foreground",
+    primary: "text-primary-foreground",
+  };
+
   return (
-    <Card 
+    <Card
       className={cn(
         "metric-card animate-card-enter interactive-hover",
-        variantClasses[variant],
+        outlined ? cn("bg-white border border-border", textVariantClasses[variant]) : variantClasses[variant],
         className
       )}
     >
