@@ -35,7 +35,7 @@ export function IssueStatCard({ title, target, actual, variant, className, leftL
           {/* Left */}
           <div className="flex flex-col items-center">
             <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center shadow-sm">
-              <span className={cn("font-semibold text-sm md:text-base", variant === 'resolved' ? 'text-white' : 'text-red-600')}>
+              <span className="text-red-600 font-semibold text-sm md:text-base">
                 {target.toLocaleString()}
               </span>
             </div>
@@ -50,7 +50,7 @@ export function IssueStatCard({ title, target, actual, variant, className, leftL
           {/* Right */}
           <div className="flex flex-col items-center">
             <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center shadow-sm">
-              <span className={cn("font-semibold text-sm md:text-base", variant === 'resolved' ? 'text-white' : 'text-red-600')}>
+              <span className="text-red-600 font-semibold text-sm md:text-base">
                 {actual.toLocaleString()}
               </span>
             </div>
