@@ -15,6 +15,7 @@ interface MetricCardProps {
   className?: string;
   headingOverride?: string;
   headingClassName?: string;
+  outlined?: boolean;
 }
 
 export const MetricCard = ({
