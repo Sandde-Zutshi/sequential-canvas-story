@@ -66,7 +66,7 @@ export const MetricCard = ({
 
       <div className="flex flex-col justify-between items-center h-full" style={outlined ? { color: outlinedColor } : undefined}>
         <div className="pt-4">
-          <h3 className={cn("text-xl font-semibold text-center", outlined ? outlinedTextClasses[variant] : "text-foreground")}>{title}</h3>
+          <h3 className={cn("text-xl font-semibold text-center", outlined ? outlinedTextClasses[variant] : "text-white")}>{title}</h3>
 
           <div className="flex items-center justify-center mt-3">
             <span className={cn("text-3xl md:text-4xl font-bold tracking-tight text-center", outlined ? outlinedTextClasses[variant] : undefined)}>{value}</span>
