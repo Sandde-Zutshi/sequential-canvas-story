@@ -182,13 +182,17 @@ export const IssuesChart = ({ title, data, type = "bar", showTarget = true, show
 
     const SegmentLabel = (props: any) => {
       const { x, y, width, height, value, payload } = props;
+      // payload can sometimes be undefined during certain render cycles; guard against it
+      const data = payload || {};
       if (value == null) return null;
-      const target = payload.targetResolved || 0;
-      const pct = target > 0 ? Math.round((value / target) * 100) : 0;
-      const posX = (x || 0) + (width || 0) / 2;
-      const posY = (y || 0) + (height || 0) / 2 + 4; // center vertically
+      const target = Number(data.targetResolved ?? data.target ?? 0);
+      const pct = target > 0 ? Math.round((Number(value) / target) * 100) : 0;
+      const posX = (x ?? 0) + ((width ?? 0) / 2);
+      const posY = (y ?? 0) + ((height ?? 0) / 2) + 4; // center vertically
+      const isRemaining = data.remaining != null && Number(value) === Number(data.remaining);
+      const fillColor = isRemaining ? 'hsl(var(--danger))' : '#fff';
       return (
-        <text x={posX} y={posY} textAnchor="middle" fontSize={12} fontWeight={700} fill={value === payload.remaining ? 'hsl(var(--danger))' : '#fff'}>
+        <text x={posX} y={posY} textAnchor="middle" fontSize={12} fontWeight={700} fill={fillColor}>
           {pct}%
         </text>
       );
