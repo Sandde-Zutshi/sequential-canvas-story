@@ -73,9 +73,9 @@ export const MetricCard = ({
             </h3>
           ) : (
             <>
-              <h3 className={cn("text-sm font-medium opacity-90 mb-3", outlined ? textVariantClasses[variant] : undefined)}>{title}</h3>
+              <h3 className={cn("text-sm font-medium opacity-90 mb-3", outlined ? outlinedTextClasses[variant] : undefined)}>{title}</h3>
               <div className="flex items-baseline gap-3">
-                <span className={cn("text-3xl font-bold tracking-tight", outlined ? textVariantClasses[variant] : undefined)}>{value}</span>
+                <span className={cn("text-3xl font-bold tracking-tight", outlined ? outlinedTextClasses[variant] : undefined)}>{value}</span>
                 {trend && (
                   <span
                     className={cn(
@@ -89,8 +89,9 @@ export const MetricCard = ({
                   </span>
                 )}
               </div>
-              {subtitle && (
-                <p className={cn("text-sm opacity-80 mt-2 leading-relaxed", outlined ? textVariantClasses[variant] : undefined)}>{subtitle}</p>
+              {/* If subtitle looks like a percentage, render as centered pill similar to IssueStatCard */}
+              {subtitle && subtitle.toString().trim().endsWith('%') ? null : (
+                <p className={cn("text-sm opacity-80 mt-2 leading-relaxed", outlined ? outlinedTextClasses[variant] : undefined)}>{subtitle}</p>
               )}
             </>
           )}
