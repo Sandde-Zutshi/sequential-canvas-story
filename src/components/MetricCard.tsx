@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +16,7 @@ interface MetricCardProps {
   className?: string;
   headingOverride?: string;
   headingClassName?: string;
+  outlined?: boolean;
 }
 
 export const MetricCard = ({
@@ -27,58 +29,67 @@ export const MetricCard = ({
   className,
   headingOverride,
   headingClassName,
-}: MetricCardProps) => {
+  outlined,
+}: MetricCardProps & { outlined?: boolean }) => {
   const variantClasses = {
     success: "metric-card-success",
     warning: "metric-card-warning",
     danger: "metric-card-danger",
     info: "metric-card-info",
     primary: "metric-card-primary",
+  } as const;
+
+  const outlinedTextClasses: Record<string, string> = {
+    success: "text-[hsl(var(--success))]",
+    warning: "text-[hsl(var(--warning))]",
+    danger: "text-[hsl(var(--danger))]",
+    info: "text-[hsl(var(--info))]",
+    primary: "text-[hsl(var(--primary))]",
   };
 
+  const outlinedColor = `hsl(var(--${variant}))`;
+
   return (
-    <Card 
+    <Card
       className={cn(
-        "metric-card animate-card-enter interactive-hover",
-        variantClasses[variant],
+        "metric-card animate-card-enter interactive-hover relative min-h-[260px]",
+        outlined ? "bg-white border border-border" : variantClasses[variant],
         className
       )}
     >
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          {headingOverride ? (
-            <h3 className={cn("text-lg font-semibold text-foreground", headingClassName)}>
-              {headingOverride}
-            </h3>
-          ) : (
-            <>
-              <h3 className="text-sm font-medium opacity-90 mb-3">{title}</h3>
-              <div className="flex items-baseline gap-3">
-                <span className="text-3xl font-bold tracking-tight">{value}</span>
-                {trend && (
-                  <span
-                    className={cn(
-                      "text-sm font-medium px-2 py-1 rounded-full transition-all duration-300",
-                      trend.isPositive
-                        ? "text-success-light bg-success/10"
-                        : "text-danger-light bg-danger/10"
-                    )}
-                  >
-                    {trend.isPositive ? "↗" : "↘"} {Math.abs(trend.value)}%
-                  </span>
-                )}
-              </div>
-              {subtitle && (
-                <p className="text-sm opacity-80 mt-2 leading-relaxed">{subtitle}</p>
-              )}
-            </>
-          )}
+      {/* Top-right icon */}
+      {Icon && (
+        <div className="absolute top-4 right-4 p-3 rounded-xl bg-black/10 animate-float">
+          <Icon className="h-7 w-7" />
         </div>
-        {Icon && (
-          <div className="p-3 rounded-xl bg-black/10 animate-float">
-            <Icon className="h-7 w-7" />
+      )}
+
+      <div className="flex flex-col justify-between items-center h-full" style={outlined ? { color: outlinedColor } : undefined}>
+        <div className="pt-4">
+          <h3 className={cn("text-xl font-semibold text-center", outlined ? outlinedTextClasses[variant] : "text-white")}>{title}</h3>
+
+          <div className="flex items-center justify-center mt-3">
+            <span className={cn("text-3xl md:text-4xl font-bold tracking-tight text-center", outlined ? outlinedTextClasses[variant] : "text-white")}>{value}</span>
           </div>
-        )}
+        </div>
+
+        {subtitle && subtitle.toString().trim().endsWith('%') ? (
+          <div className="mb-6 text-center">
+            <span
+              className={cn(
+                "inline-flex items-center px-3 py-1 rounded-full text-base md:text-lg font-semibold",
+                // Non-outlined cards: red pill with white text (match IssueStatCard red box)
+                !outlined ? "bg-[hsl(var(--danger))] text-white" : "bg-white",
+                // For outlined, set the text color to variant color (danger -> red)
+                outlined ? outlinedTextClasses[variant] : undefined
+              )}
+            >
+              {subtitle}
+            </span>
+          </div>
+        ) : subtitle ? (
+          <p className={cn("text-sm opacity-80 mt-2 leading-relaxed", outlined ? outlinedTextClasses[variant] : undefined)}>{subtitle}</p>
+        ) : null}
       </div>
     </Card>
   );
