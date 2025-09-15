@@ -50,13 +50,12 @@ const Home = () => {
       {/* Summary Cards - DSP style */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <IssueStatCard
-          title="Actual Issues"
+          title="Resolution Rate"
           target={totals.actualRaised}
           actual={totals.actualResolved}
           variant="resolved"
           leftLabelText="Raised"
           rightLabelText="Resolved"
-          subtitle="(Average Resolution Rate)"
         />
         <MetricCard
           title="City with Highest Resolution Rate"
