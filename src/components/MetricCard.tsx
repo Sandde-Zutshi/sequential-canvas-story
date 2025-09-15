@@ -62,9 +62,9 @@ export const MetricCard = ({
             </h3>
           ) : (
             <>
-              <h3 className="text-sm font-medium opacity-90 mb-3">{title}</h3>
+              <h3 className={cn("text-sm font-medium opacity-90 mb-3", outlined ? textVariantClasses[variant] : undefined)}>{title}</h3>
               <div className="flex items-baseline gap-3">
-                <span className="text-3xl font-bold tracking-tight">{value}</span>
+                <span className={cn("text-3xl font-bold tracking-tight", outlined ? textVariantClasses[variant] : undefined)}>{value}</span>
                 {trend && (
                   <span
                     className={cn(
@@ -79,7 +79,7 @@ export const MetricCard = ({
                 )}
               </div>
               {subtitle && (
-                <p className="text-sm opacity-80 mt-2 leading-relaxed">{subtitle}</p>
+                <p className={cn("text-sm opacity-80 mt-2 leading-relaxed", outlined ? textVariantClasses[variant] : undefined)}>{subtitle}</p>
               )}
             </>
           )}
