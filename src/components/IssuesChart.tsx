@@ -197,7 +197,7 @@ export const IssuesChart = ({ title, data, type = "bar", showTarget = true, show
       const posX = (x ?? 0) + ((width ?? 0) / 2);
       const posY = (y ?? 0) + ((height ?? 0) / 2) + 4;
       return (
-        <text x={posX} y={posY} textAnchor="middle" fontSize={12} fontWeight={700} fill="#000">
+        <text x={posX} y={posY} textAnchor="middle" fontSize={12} fontWeight={700} fill="#000" stroke="#ffffff" strokeWidth={0.6} paintOrder="stroke">
           {pct}%
         </text>
       );
