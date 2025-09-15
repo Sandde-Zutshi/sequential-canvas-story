@@ -61,7 +61,7 @@ export function IssueStatCard({ title, target, actual, variant, className, leftL
         {/* Highlighted percentage */}
         <div className="mt-2 text-center">
           {variant === 'resolved' ? (
-            <span className="inline-flex items-center px-3 py-1 rounded-full bg-white text-red-600 text-base md:text-lg font-semibold">
+            <span className="inline-flex items-center px-3 py-1 rounded-full bg-[hsl(var(--danger))] text-white text-base md:text-lg font-semibold">
               {pct}%
             </span>
           ) : (
