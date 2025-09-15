@@ -36,17 +36,8 @@ export const MetricCard = ({
     danger: "metric-card-danger",
     info: "metric-card-info",
     primary: "metric-card-primary",
-  };
+  } as const;
 
-  const textVariantClasses: Record<string, string> = {
-    success: "text-success-foreground",
-    warning: "text-warning-foreground",
-    danger: "text-danger-foreground",
-    info: "text-info-foreground",
-    primary: "text-primary-foreground",
-  };
-
-  // For outlined cards we need a contrasting text color (not the 'foreground' which may be white)
   const outlinedTextClasses: Record<string, string> = {
     success: "text-[hsl(var(--success))]",
     warning: "text-[hsl(var(--warning))]",
@@ -60,62 +51,40 @@ export const MetricCard = ({
   return (
     <Card
       className={cn(
-        "metric-card animate-card-enter interactive-hover",
-        outlined ? cn("bg-white border border-border", outlinedTextClasses[variant]) : variantClasses[variant],
+        "metric-card animate-card-enter interactive-hover relative",
+        outlined ? "bg-white border border-border" : variantClasses[variant],
         className
       )}
     >
-      <div className="flex items-start justify-between" style={outlined ? { color: outlinedColor } : undefined}>
-        <div className="flex-1">
-          {headingOverride ? (
-            <h3 className={cn("text-lg font-semibold text-foreground", headingClassName)}>
-              {headingOverride}
-            </h3>
-          ) : (
-            <>
-              <h3 className={cn("text-sm font-medium opacity-90 mb-3", outlined ? outlinedTextClasses[variant] : undefined)}>{title}</h3>
-              <div className="flex items-baseline gap-3">
-                <span className={cn("text-3xl font-bold tracking-tight", outlined ? outlinedTextClasses[variant] : undefined)}>{value}</span>
-                {trend && (
-                  <span
-                    className={cn(
-                      "text-sm font-medium px-2 py-1 rounded-full transition-all duration-300",
-                      trend.isPositive
-                        ? "text-success-light bg-success/10"
-                        : "text-danger-light bg-danger/10"
-                    )}
-                  >
-                    {trend.isPositive ? "↗" : "↘"} {Math.abs(trend.value)}%
-                  </span>
-                )}
-              </div>
-              {/* If subtitle looks like a percentage, render as centered pill similar to IssueStatCard */}
-              {subtitle && subtitle.toString().trim().endsWith('%') ? null : (
-                <p className={cn("text-sm opacity-80 mt-2 leading-relaxed", outlined ? outlinedTextClasses[variant] : undefined)}>{subtitle}</p>
-              )}
-            </>
-          )}
-        </div>
-        {Icon && (
-          <div className="p-3 rounded-xl bg-black/10 animate-float">
-            <Icon className="h-7 w-7" />
-          </div>
-        )}
-      </div>
-
-      {/* Centered percentage pill for percentage-like subtitles */}
-      {subtitle && subtitle.toString().trim().endsWith('%') && (
-        <div className="mt-4 flex justify-center">
-          <span
-            className={cn(
-              "inline-flex items-center px-3 py-1 rounded-full bg-white text-base md:text-lg font-semibold",
-              outlined ? outlinedTextClasses[variant] : undefined
-            )}
-          >
-            {subtitle}
-          </span>
+      {/* Top-right icon */}
+      {Icon && (
+        <div className="absolute top-4 right-4 p-3 rounded-xl bg-black/10 animate-float">
+          <Icon className="h-7 w-7" />
         </div>
       )}
+
+      <div className="flex flex-col items-center gap-4" style={outlined ? { color: outlinedColor } : undefined}>
+        <h3 className={cn("text-xl font-semibold text-center", outlined ? outlinedTextClasses[variant] : "text-foreground")}>{title}</h3>
+
+        <div className="flex items-center justify-center">
+          <span className={cn("text-3xl md:text-4xl font-bold tracking-tight text-center", outlined ? outlinedTextClasses[variant] : undefined)}>{value}</span>
+        </div>
+
+        {subtitle && subtitle.toString().trim().endsWith('%') ? (
+          <div className="mt-2 text-center">
+            <span
+              className={cn(
+                "inline-flex items-center px-3 py-1 rounded-full bg-white text-base md:text-lg font-semibold",
+                outlined ? outlinedTextClasses[variant] : `text-[hsl(var(--${variant}))]`
+              )}
+            >
+              {subtitle}
+            </span>
+          </div>
+        ) : subtitle ? (
+          <p className={cn("text-sm opacity-80 mt-2 leading-relaxed", outlined ? outlinedTextClasses[variant] : undefined)}>{subtitle}</p>
+        ) : null}
+      </div>
     </Card>
   );
 };
