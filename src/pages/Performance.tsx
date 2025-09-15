@@ -168,7 +168,6 @@ const Performance = ({ activeModule }: PerformanceProps) => {
           <MetricCard
             title="Overall (% malba collected/target)"
             value={`${overall}%`}
-            icon={Target}
             variant="info"
           />
           <MetricCard
