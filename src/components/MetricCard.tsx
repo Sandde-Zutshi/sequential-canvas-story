@@ -55,6 +55,8 @@ export const MetricCard = ({
     primary: "text-[hsl(var(--primary))]",
   };
 
+  const outlinedColor = `hsl(var(--${variant}))`;
+
   return (
     <Card
       className={cn(
@@ -63,7 +65,7 @@ export const MetricCard = ({
         className
       )}
     >
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between" style={outlined ? { color: outlinedColor } : undefined}>
         <div className="flex-1">
           {headingOverride ? (
             <h3 className={cn("text-lg font-semibold text-foreground", headingClassName)}>
