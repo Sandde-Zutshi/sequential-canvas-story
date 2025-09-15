@@ -173,7 +173,6 @@ const Performance = ({ activeModule }: PerformanceProps) => {
           <MetricCard
             title="Best city"
             headingOverride={`Best city ${best.city} ${best.percent}%`}
-            icon={Trophy}
             variant="success"
           />
           <MetricCard
