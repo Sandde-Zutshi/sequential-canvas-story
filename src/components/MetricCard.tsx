@@ -102,6 +102,20 @@ export const MetricCard = ({
           </div>
         )}
       </div>
+
+      {/* Centered percentage pill for percentage-like subtitles */}
+      {subtitle && subtitle.toString().trim().endsWith('%') && (
+        <div className="mt-4 flex justify-center">
+          <span
+            className={cn(
+              "inline-flex items-center px-3 py-1 rounded-full bg-white text-base md:text-lg font-semibold",
+              outlined ? outlinedTextClasses[variant] : undefined
+            )}
+          >
+            {subtitle}
+          </span>
+        </div>
+      )}
     </Card>
   );
 };
