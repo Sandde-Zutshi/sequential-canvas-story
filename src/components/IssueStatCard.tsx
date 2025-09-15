@@ -35,7 +35,9 @@ export function IssueStatCard({ title, target, actual, variant, className, leftL
           {/* Left */}
           <div className="flex flex-col items-center">
             <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center shadow-sm">
-              <span className="text-red-600 font-semibold text-sm md:text-base">{target.toLocaleString()}</span>
+              <span className={cn("font-semibold text-sm md:text-base", variant === 'resolved' ? 'text-white' : 'text-red-600')}>
+                {target.toLocaleString()}
+              </span>
             </div>
             <span className="mt-2 text-sm md:text-base opacity-90">{leftLabel}</span>
           </div>
@@ -48,13 +50,25 @@ export function IssueStatCard({ title, target, actual, variant, className, leftL
           {/* Right */}
           <div className="flex flex-col items-center">
             <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center shadow-sm">
-              <span className="text-red-600 font-semibold text-sm md:text-base">{actual.toLocaleString()}</span>
+              <span className={cn("font-semibold text-sm md:text-base", variant === 'resolved' ? 'text-white' : 'text-red-600')}>
+                {actual.toLocaleString()}
+              </span>
             </div>
             <span className="mt-2 text-sm md:text-base opacity-90">{rightLabel}</span>
           </div>
         </div>
 
-        <div className="mt-2 text-center text-base md:text-lg font-semibold">{pct}%</div>
+        {/* Highlighted percentage */}
+        <div className="mt-2 text-center">
+          {variant === 'resolved' ? (
+            <span className="inline-flex items-center px-3 py-1 rounded-full bg-white text-red-600 text-base md:text-lg font-semibold">
+              {pct}%
+            </span>
+          ) : (
+            <div className="text-base md:text-lg font-semibold">{pct}%</div>
+          )}
+        </div>
+
         {subtitle && (
           <div className="mt-1 text-center text-xs md:text-sm opacity-80">{subtitle}</div>
         )}
