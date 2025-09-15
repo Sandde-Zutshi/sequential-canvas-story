@@ -48,7 +48,7 @@ const Home = () => {
   return (
     <div className="space-y-6">
       {/* Summary Cards - DSP style */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <IssueStatCard
           title="Actual Issues"
           target={totals.actualRaised}
@@ -58,9 +58,6 @@ const Home = () => {
           rightLabelText="Resolved"
           subtitle="(Average Resolution Rate)"
         />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <MetricCard
           title="City with Highest Resolution Rate"
           value="Noida"
