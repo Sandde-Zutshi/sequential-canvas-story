@@ -71,6 +71,7 @@ const Home = () => {
           subtitle="29%"
           icon={ArrowDownCircle}
           variant="danger"
+          outlined
         />
       </div>
 
