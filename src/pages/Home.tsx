@@ -69,7 +69,6 @@ const Home = () => {
           value="Baharudgarh"
           subtitle="29%"
           variant="danger"
-          outlined
         />
       </div>
 
