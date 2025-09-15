@@ -219,21 +219,18 @@ const Performance = ({ activeModule }: PerformanceProps) => {
           title="City with Fastest Issue Resolution"
           value="Noida"
           subtitle="Noida: 1.8 days avg"
-          icon={Zap}
           variant="success"
         />
         <MetricCard
           title="City with Slowest Issue Resolution"
           value="Ghaziabad"
           subtitle="Ghaziabad: 5.2 days avg"
-          icon={Clock}
           variant="danger"
         />
         <MetricCard
           title="Average Issue Resolution Time by City"
           value="3.4 days"
           subtitle="Avg. Time across all cities"
-          icon={Target}
           variant="info"
         />
       </div>
