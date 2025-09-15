@@ -178,8 +178,8 @@ export const IssuesChart = ({ title, data, type = "bar", showTarget = true, show
     const transformed = data.map((d: any) => {
       const actual = Number(d.actualResolved) || 0;
       const target = Number(d.targetResolved) || 0;
-      const unresolvedPercent = Math.round(((target - actual) / 100) * 100) / 1; // value in percent units per user spec
-      const resolvedPercent = Math.round((actual / 100) * 100) / 1;
+      const unresolvedPercent = Math.round((target - actual) / 100);
+      const resolvedPercent = Math.round(actual / 100);
       return {
         ...d,
         actualResolved: actual,
