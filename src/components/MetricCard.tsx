@@ -52,7 +52,7 @@ export const MetricCard = ({
   return (
     <Card
       className={cn(
-        "metric-card animate-card-enter interactive-hover relative",
+        "metric-card animate-card-enter interactive-hover relative min-h-[260px]",
         outlined ? "bg-white border border-border" : variantClasses[variant],
         className
       )}
@@ -64,15 +64,17 @@ export const MetricCard = ({
         </div>
       )}
 
-      <div className="flex flex-col items-center gap-4" style={outlined ? { color: outlinedColor } : undefined}>
-        <h3 className={cn("text-xl font-semibold text-center", outlined ? outlinedTextClasses[variant] : "text-foreground")}>{title}</h3>
+      <div className="flex flex-col justify-between items-center h-full" style={outlined ? { color: outlinedColor } : undefined}>
+        <div className="pt-4">
+          <h3 className={cn("text-xl font-semibold text-center", outlined ? outlinedTextClasses[variant] : "text-foreground")}>{title}</h3>
 
-        <div className="flex items-center justify-center">
-          <span className={cn("text-3xl md:text-4xl font-bold tracking-tight text-center", outlined ? outlinedTextClasses[variant] : undefined)}>{value}</span>
+          <div className="flex items-center justify-center mt-3">
+            <span className={cn("text-3xl md:text-4xl font-bold tracking-tight text-center", outlined ? outlinedTextClasses[variant] : undefined)}>{value}</span>
+          </div>
         </div>
 
         {subtitle && subtitle.toString().trim().endsWith('%') ? (
-          <div className="mt-2 text-center">
+          <div className="mb-6 text-center">
             <span
               className={cn(
                 "inline-flex items-center px-3 py-1 rounded-full text-base md:text-lg font-semibold",
