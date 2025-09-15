@@ -46,11 +46,20 @@ export const MetricCard = ({
     primary: "text-primary-foreground",
   };
 
+  // For outlined cards we need a contrasting text color (not the 'foreground' which may be white)
+  const outlinedTextClasses: Record<string, string> = {
+    success: "text-[hsl(var(--success))]",
+    warning: "text-[hsl(var(--warning))]",
+    danger: "text-[hsl(var(--danger))]",
+    info: "text-[hsl(var(--info))]",
+    primary: "text-[hsl(var(--primary))]",
+  };
+
   return (
     <Card
       className={cn(
         "metric-card animate-card-enter interactive-hover",
-        outlined ? cn("bg-white border border-border", textVariantClasses[variant]) : variantClasses[variant],
+        outlined ? cn("bg-white border border-border", outlinedTextClasses[variant]) : variantClasses[variant],
         className
       )}
     >
